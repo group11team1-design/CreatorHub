@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% block title %}Downloads{% endblock %}{% block content %}
+<section class="downloads-page">
+  <div class="downloads-hero">
+    <div class="downloads-hero-copy"><span class="section-kicker">CREATORHUB DOWNLOAD CENTER</span><h1>Find your next <em>favourite.</em></h1><p>Browse available apps, extensions, games and creative downloads. Pick something and download it directly.</p></div>
+    <div class="downloads-hero-art"><span>↓</span><i></i><b></b></div>
+  </div>
+  <div class="downloads-toolbar"><div><span class="section-kicker">READY TO DOWNLOAD</span><h2>Available creations</h2></div><form class="downloads-search" action="{{url_for('downloads')}}"><input type="search" name="q" value="{{q}}" placeholder="Find a creation..."><button type="submit" aria-label="Search downloads">⌕</button></form></div>
+  {% if items %}
+  <div class="downloads-grid">
+    {% for x in items %}
+    <article class="download-card">
+      <a class="download-card-main" href="/item/{{x.id}}">
+        <span class="download-card-icon">{% if x.cover %}<img src="/image/{{x.cover}}" alt="{{x.title}} icon">{% else %}✦{% endif %}</span>
+        <span class="download-card-copy"><b>{{x.title}}</b><small>{{x.category}} · Version {{x.version or '1.0'}}</small><em>↓ {{x.downloads}} downloads</em></span>
+      </a>
+      <a class="download-card-button" href="/download/{{x.id}}">Download <span>↓</span></a>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state"><h3>No downloads found</h3><p>{% if q %}Try a different search term.{% else %}There are no published creations yet.{% endif %}</p><a class="store-button" href="/">Back to Home</a></div>
+  {% endif %}
+</section>
+{% endblock %}

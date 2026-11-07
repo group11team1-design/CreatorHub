@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block title %}{{code}} · CreatorHub{% endblock %}{% block content %}<section class="error-page"><span>{{code}}</span><h1>{{'Page not found' if code==404 else 'That request expired'}}</h1><p>{{message}}</p><a class="primary-action" href="/">Back to the store →</a></section>{% endblock %}

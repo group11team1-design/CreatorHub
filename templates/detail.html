@@ -1,0 +1,60 @@
+{% extends "base.html" %}{% block title %}{{item.title}}{% endblock %}{% block content %}
+<div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/?category={{item.category}}">{{item.category}}</a><span>›</span>{{item.title}}</div>
+
+{% if item.ad_banner %}
+<section class="product-ad-hero">
+  <img src="/image/{{item.ad_banner}}" alt="{{item.title}} promotional banner">
+  <div class="product-ad-overlay"></div>
+  <div class="product-ad-copy"><span>CREATORHUB SPOTLIGHT</span><h1>{{item.title}}</h1><p>{{item.category}} · Created by {{creator_name}}</p></div>
+  <a class="product-ad-cta" href="/download/{{item.id}}">Download now <b>↓</b></a>
+</section>
+{% else %}
+<section class="product-ad-hero product-ad-placeholder">
+  <div class="placeholder-orb orb-one"></div><div class="placeholder-orb orb-two"></div>
+  <div class="product-ad-copy"><span>CREATORHUB COLLECTION</span><h1>{{item.title}}</h1><p>{{item.category}} · Created by {{creator_name}}</p></div>
+  <a class="product-ad-cta" href="/download/{{item.id}}">Download now <b>↓</b></a>
+</section>
+{% endif %}
+
+<section class="store-product-layout">
+  <div class="store-product-main">
+    <section class="product-detail-top">
+      <div class="detail-cover">{% if item.cover %}<img src="/image/{{item.cover}}" alt="{{item.title}} app icon" onerror="this.style.display='none'">{% else %}<span class="fallback-app-icon big"><svg viewBox="0 0 24 24"><path d="m12 2.8 2.5 6.7 6.7 2.5-6.7 2.5-2.5 6.7-2.5-6.7L2.8 12l6.7-2.5z"/></svg></span>{% endif %}</div>
+      <div class="detail-heading"><span class="detail-category">{{item.category}}</span><h2>{{item.title}}</h2><div class="publisher-line">Published by <b>{{creator_name}}</b></div><p>{{item.description}}</p><div class="detail-rating"><span>★</span> CreatorHub pick <i>·</i> {{item.downloads}} downloads <i>·</i> Version {{item.version or '1.0'}}</div><a class="store-button install-button" href="/download/{{item.id}}">Download <svg viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 18v3h16v-3"/></svg></a><small class="download-hint">Direct download · Provided by the creator</small></div>
+    </section>
+
+    {% if shots %}
+    <section class="section screenshot-section"><div class="section-heading"><div><span class="section-kicker">SCREENSHOTS</span><h2>Take a closer look</h2></div><span class="items-count">{{shots|length}} images</span></div>
+      <div class="screenshot-carousel">
+        <button class="shot-nav shot-prev" type="button" data-scroll="product-shots" data-dir="-1" aria-label="Previous screenshots">‹</button>
+        <div class="screenshot-row" id="product-shots">{% for s in shots %}<button class="screenshot-card" type="button" data-src="/image/{{s}}"><img src="/image/{{s}}" alt="{{item.title}} screenshot {{loop.index}}" loading="lazy" onerror="this.closest('button').classList.add('image-error')"><span>Click to view full size</span></button>{% endfor %}</div>
+        <button class="shot-nav shot-next" type="button" data-scroll="product-shots" data-dir="1" aria-label="Next screenshots">›</button>
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="app-details-section"><div class="section-heading"><div><span class="section-kicker">MORE INFORMATION</span><h2>Additional information</h2></div></div>
+      <div class="additional-info-grid">
+        <div class="info-cell"><span class="info-icon">⬡</span><div><small>Developed by</small><b>{{creator_name}}</b></div></div>
+        <div class="info-cell"><span class="info-icon">▣</span><div><small>Published by</small><b>{{creator_name}}</b><p>{{creator_tagline}}</p></div></div>
+        <div class="info-cell"><span class="info-icon">▦</span><div><small>Release date</small><b>{{item.created[:10]}}</b></div></div>
+        <div class="info-cell"><span class="info-icon">⚑</span><div><small>Genres</small><b>{{item.category}}</b></div></div>
+        <div class="info-cell"><span class="info-icon">▱</span><div><small>Approximate size</small><b>{{(item_size_mb|default(0))}} MB</b></div></div>
+        <div class="info-cell"><span class="info-icon">↓</span><div><small>Installation</small><b>Download the file directly from CreatorHub.</b></div></div>
+        <div class="info-cell"><span class="info-icon">◇</span><div><small>Compatibility</small><b>{{item.requirements or 'See creator description'}}</b></div></div>
+        <div class="info-cell"><span class="info-icon">◎</span><div><small>Supported languages</small><b>As specified by the creator</b></div></div>
+        <div class="info-cell creator-info-cell"><span class="creator-avatar">{{creator_name[:1]|upper}}</span><div><small>Creator / Publisher information</small><b>{{creator_name}}</b><p>{{creator_bio}}</p>{% if creator_location %}<p>{{creator_location}}</p>{% endif %}</div></div>
+        <div class="info-cell"><span class="info-icon">▤</span><div><small>File name</small><b>{{item.original}}</b></div></div>
+        <div class="info-cell"><span class="info-icon">↓</span><div><small>Total downloads</small><b>{{item.downloads}}</b></div></div>
+        <div class="info-cell"><span class="info-icon">ⓘ</span><div><small>Version</small><b>{{item.version or '1.0'}}</b></div></div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="discover-sidebar"><div class="discover-head"><h2>Discover more</h2><span>›</span></div>
+    {% for other in discover %}<a class="discover-card" href="/item/{{other.id}}"><span class="discover-icon">{% if other.cover %}<img src="/image/{{other.cover}}" alt="">{% else %}✦{% endif %}</span><span class="discover-copy"><b>{{other.title}}</b><small>{{other.category}}</small><em>Free</em></span></a>{% endfor %}
+    {% if not discover %}<p class="discover-empty">More creations are coming soon.</p>{% endif %}
+  </aside>
+</section>
+<div class="lightbox" id="lightbox"><button type="button" aria-label="Close">×</button><img alt="Screenshot preview"></div>
+{% endblock %}

@@ -1,0 +1,11 @@
+__pycache__/
+.venv/
+.env
+.secret_key
+creatorhub.db
+uploads/files/*
+!uploads/files/.gitkeep
+uploads/screenshots/*
+!uploads/screenshots/.gitkeep
+
+.vercel
